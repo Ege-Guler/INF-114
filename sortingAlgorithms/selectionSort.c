@@ -34,7 +34,7 @@ int findMin(int* arr, int ix)
 
 }
 
-void insertionSort(int* arr)
+void selectionSort(int* arr)
 {
 
     for(int i = 0; i < N; i++)
@@ -66,7 +66,7 @@ int main()
     }
 
     printArr(arr);
-    insertionSort(arr);
+    selectionSort(arr);
     printf("\n----------------Sorted Array----------------\n");
     printArr(arr);
 
