@@ -1,4 +1,3 @@
-
 /*
     selectionSort.c
     time complexity: n^2
