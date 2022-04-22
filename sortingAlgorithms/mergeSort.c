@@ -2,7 +2,7 @@
     mergeSort.c
     time complexity: O(nlogn)
     Ege Guler - Galatasaray University
-    04/17/2022
+    04/22/2022
 */
 #include <stdio.h>
 #include <stdlib.h>
