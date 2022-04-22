@@ -3,7 +3,7 @@
     time complexity: n^2
 
     Ege Guler - Galatasaray University
-    04/17/2022
+   04/22/2022
 */
 
 #include <stdio.h>
