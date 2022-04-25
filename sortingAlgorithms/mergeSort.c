@@ -24,7 +24,7 @@ void merge(int* arr, int h, int m, int l)
     }
     for(int i = 0; i < lenSecond; i++)
     {
-        tmp2[i] = arr[i + lenFirst];
+        tmp2[i] = arr[m +1 + i];
     }
 
     int x = 0, y = 0, z = l;
