@@ -24,7 +24,7 @@ int partition(int* arr, int first , int last)
 {
 
     int pivot = first;
-    int i = first + 1;
+    int i = first;
     int j = last;
 
     int arrP = arr[pivot];
