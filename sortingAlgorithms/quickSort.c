@@ -1,98 +1,82 @@
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
 
-
-#define N 6
-int swap(int* x, int* y);
-int partition(int* arr, int low, int high);
-void quickSort(int* arr, int low, int high);
-void printArr(int* arr);
-void shuffleArr(int* arr, int len);
-
-
-int main(void)
+void printArr(int* arr, int len)
 {
-
-
-
-    int arr[N] = {3, 9, 2, 4, 1, 7};
-    printf("\n**Unsorted Array**\n");
-    printArr(arr);
-    shuffleArr(arr, N);
-    printf("\n**Shuffled Array**\n");
-    printArr(arr);
-    quickSort(arr, 0, 5);
-    printf("\n**Sorted Array**\n");
-    printArr(arr);
-
-    return 0;
-}
-
-
-
-int partition(int* arr, int low, int high)
-{
-    int i = low + 1;
-    int j = high;
-
-    int pivot = low;
-
-    while(i < j)
+    for(int i = 0; i < len; i++)
     {
-        for(; arr[j] > arr[pivot]; j--);
-        for(; arr[i] < arr[pivot];  i++);
-
-        if(i < j)
-        {
-            swap(&arr[i], &arr[j]);
-            i++;
-            j--;
-        }
+        printf("%d ", arr[i]);
 
     }
-
-    swap(&arr[j], &arr[pivot]);
-
-    return j;
+    printf("\n");
 }
 
-void quickSort(int* arr, int low, int high)
-{
-    if(low < high)
-    {
-        int j = partition(arr, low, high);
-        quickSort(arr, low, j - 1);
-        quickSort(arr, j + 1, high );
-    }
-}
 
-int swap(int* x, int* y)
+void swap(int* x, int* y)
 {
     int temp = *x;
     *x = *y;
     *y = temp;
 }
 
-void printArr(int* arr)
+int partition(int* arr, int first , int last)
 {
-    //int len = sizeof(arr) / sizeof(arr[0]);
-    for(int i = 0; i < N - 1; i++)
+
+    int pivot = first;
+    int i = first + 1;
+    int j = last;
+
+    int arrP = arr[pivot];
+
+    while(i < j)
     {
-        printf("%d - ", arr[i]);
+        for(; arr[j] > arrP; j--);
+        for(; arr[i] <= arrP && i < last; i++);
+
+        
+        if(i < j)
+        {
+            swap(&arr[i], &arr[j]);
+
+        }
     }
-    printf("%d", arr[N - 1]);
+
+    swap(&arr[j], &arr[pivot]);
+    return j;
+
 }
 
-void shuffleArr(int* arr, int len)
+void quicksort(int* arr, int first, int last)
+{
+    printf("--->  ");
+    printArr(arr, 10);
+
+    if(first < last)
+    {
+        int m = partition(arr, first, last);
+        quicksort(arr, first, m - 1);
+        quicksort(arr, m + 1, last);
+        
+    }
+}
+void shuffle(int* arr, int len)
 {
     srand(time(NULL));
-    int random;
 
-    for(int i = len - 1; i > 0; i--)
+    for(int i = 0; i < len; i++)
     {
-        random = rand() % i;
-        swap(&arr[random], &arr[i]);
-
+        int random = rand() % len;    
+        swap(&arr[i], &arr[random]);
     }
+}
+int main(void)
+{
+
+    int arr[10] = {-4, 4, 1, 0, 6, 32, 12, -5, 9, 11};
+    printArr(arr, 10);
+    //shuffle(arr, 10);
+   // printArr(arr, 10);
+    quicksort(arr, 0, 9);
+    printArr(arr, 10);
 }
