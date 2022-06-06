@@ -12,7 +12,7 @@ void swim(int* heap, int i);
 int main(void)
 {
     int heap[N];
-    //-1 representes void
+    //-1 represents void
     for(int i = 0; i < N; i++)
     {
         heap[i] = -1;
