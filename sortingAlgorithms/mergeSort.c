@@ -5,101 +5,90 @@
     04/22/2022
 */
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
 
-
-
-void merge(int* arr, int l, int m, int h);
-void sort(int* arr, int h, int l);
-void printArr(int* arr, int len);
-
-
-
-int main(void)
+void merge(int* A, int* C, int low, int mid, int high)
 {
-    srand(time(NULL));
-
-    int SIZE = rand() % 18 + 2;
-    printf("%d", SIZE);
-
-    int *arr = (int* )malloc(SIZE* sizeof(int));
-
-    for(int i = 0; i < SIZE; i++)
+    for(int k = low; k <= high; k++)
     {
-        arr[i] = rand() % 41 - 20;
+        C[k] = A[k];
     }
 
-    
+    int i = low;
+    int j = mid + 1;
 
-    printf("\n---Unsorted Arr---\n");
-    printArr(arr, SIZE);
-    sort(arr, SIZE -1, 0);
-    printf("\n----Sorted Arr----\n");
-    printArr(arr, SIZE);
-
-    free(arr);
-    return 0;
-}
-
-void merge(int* arr, int l, int m, int h)
-{
-
-    int lenFirst = m - l + 1;
-    int lenSecond = h - m;
-
-    int tempFirst[lenFirst];
-    int tempSecond[lenSecond];
-
-    for(int i = 0; i < lenFirst; i++)
+    for(int k = low; k <= high; k++)
     {
-        tempFirst[i] = arr[i + l];
-    }
-
-    for(int i = 0; i < lenSecond; i++)
-    {
-        tempSecond[i] = arr[i + m + 1];
-    }
-
-    int i = 0, j = 0, k = l;
-
-    while(i < lenFirst && j < lenSecond)
-    {
-        if(tempFirst[i] < tempSecond[j])
+        if(i > mid)
         {
-            arr[k] = tempFirst[i];
-            i++; 
+            A[k] = C[j++];
+        }
+        else if(j > high)
+        {
+            A[k] = C[i++];
+        }
+        else if(C[i] > C[j])
+        {
+            A[k] = C[j++];
         }
         else
         {
-            arr[k] = tempSecond[j];
-            j++;
+            A[k] = C[i++];
         }
-        k++;
     }
-
-    for(; i < lenFirst; arr[k] = tempFirst[i], i++, k++);
-    for(; i < lenSecond; arr[k] = tempSecond[i], j++, k++);
+    
 
 }
 
-void sort(int* arr, int h, int l)
+void sort(int* A, int* C, int low, int high)
 {
-    if(h > l)
+
+    if(high > low)
     {
-        int m = (h + l) / 2;
-        sort(arr, m , l);
-        sort(arr, h, m + 1);
-        merge(arr, l, m, h);
+        int mid = low + (high - low) / 2;
+        sort(A, C, low, mid);
+        sort(A, C, mid + 1, high);
+        merge(A, C, low, mid, high);
     }
+}
+
+
+void mergeSort(int* A, int len)
+{  
+    int C[len];
+
+    sort(A, C, 0, len - 1);
 }
 
 void printArr(int* arr, int len)
 {
-
-    for(int i = 0; i < len - 1; i++)
+    for(int i = 0; i < len; i++)
     {
-        printf("%d | ", arr[i]);
+        printf("%d ", arr[i]);
     }
-    printf("%d", arr[len - 1]);
+    printf("\n");
+}
+
+int main()
+{
+
+    int random;
+    srand(time(NULL));
+
+    int SIZE = rand() % 50;
+
+    int* array = malloc(sizeof(int) * SIZE);
+ 
+    for(int i = 0; i < SIZE; i++)
+    {
+        array[i] = (rand() % 201) -100;
+    }
+
+    printArr(array, SIZE);
+    mergeSort(array, SIZE);
+    printArr(array, SIZE);
+
+
+    return 0;
 }
