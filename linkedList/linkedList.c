@@ -2,96 +2,147 @@
 #include <stdlib.h>
 
 typedef struct node {
-    int value;
+
+    int data;
     struct node* next;
 } node;
 
 typedef struct linkedList {
+    
     node* head;
     node* tail;
 } linkedList;
 
 
-node* newNode(int val)
+node* newNode(int data)
 {
     node* temp = malloc(sizeof(node*));
-    temp->value = val;
+    temp->data = data;
     temp->next = NULL;
 
-    return temp; 
+    return temp;
 }
 
-linkedList* pushAtTail(linkedList* myList, int val) 
+linkedList* insertAtHead(linkedList* myList, int data)
 {
-    node* temp = newNode(val);
-
-    if(myList->tail == NULL){
+    node* temp = newNode(data);
+    
+    if(myList->tail == NULL)
+    {
         myList->tail = temp;
     }
+
     temp->next = myList->head;
     myList->head = temp;
-    return myList;
+
+}
+
+linkedList* insertAtTail(linkedList* myList, int data)
+{
+    
+    if(myList->tail == NULL)
+    {
+        insertAtHead(myList, data);
+    }
+    else 
+    {
+        node* temp = newNode(data);
+        myList->tail->next = temp;
+        myList->tail = temp;
+    }
+    
 
 
 }
 
-linkedList* pop(linkedList* myList)
+linkedList* deleteAtTail(linkedList* myList)
 {
     if(myList->tail == NULL)
     {
+        printf("List is empty\n");
         return myList;
     }
-
-    node* ix = myList->head;
-
-    while(ix->next != myList->tail)
+    if(myList->tail == myList->head)
     {
-        ix = ix->next;
+        myList->head = NULL;
+        myList->tail = NULL;
+        return myList;
+        
     }
-    //(myList->tail)->next = ix;
 
-    myList->tail = ix;
-    ix->next = NULL;
+    node* pivot = myList->head;
+
+    while(pivot->next != myList->tail)
+    {
+        pivot = pivot->next;
+    }
+
+    pivot->next = NULL;
+    myList->tail = pivot;
+
+    return myList;
+
+}
+linkedList* deleteAtHead(linkedList* myList)
+{
+    if(myList->tail == NULL)
+    {
+        printf("List is empty\n");
+        return myList;
+    }
+    if(myList->tail == myList->head)
+    {
+        myList->head = NULL;
+        myList->tail = NULL;
+        return myList;
+        
+    }
+
+    myList->head = myList->head->next;
     return myList;
 }
 
-void printList(linkedList* myList)
+void recPrint(node* headNode)
 {
-    node* temp = myList->head;
-
-    while(temp !=NULL)
+    if(headNode != NULL)
     {
-        printf("\n\t%p -- %d\n", temp, temp->value);
-        temp = temp->next;
+        printf("%d ", headNode->data);
+        recPrint(headNode->next);
+    }
+    else
+    {
+        printf("\n");
+    }
+
+}
+
+int len(node* headNode)
+{
+    if(headNode == NULL)
+    {
+        return 0;
+    }
+    else{
+        return 1 + len(headNode->next);
     }
 }
 
-//recursive printArr
-void recPrintList(node* node)
+int main(void)
 {
 
-    if(node->next == NULL)
-    {
-        printf("%d ", node->value);
-        return;
-    }
-    printf("%d ", node->value);
-    recPrintList(node->next);
-}
-int main()
-{
     linkedList* myList = malloc(sizeof(linkedList*));
 
-    myList = pushAtTail(myList, 16);
-    myList = pushAtTail(myList, 8);
-    myList = pushAtTail(myList, 4);
+    myList = insertAtHead(myList, 15);
+    myList = insertAtHead(myList, 11);
+    myList = insertAtHead(myList, 13);
+    myList = insertAtHead(myList, 55);
+    printf("\n length of list is: %d \n", len(myList->head));
     
-    recPrintList(myList->head);
+    recPrint(myList->head);
 
-    myList = pop(myList);
-    printf("\n");
+    //-------------
 
-    recPrintList(myList->head);
-    
+    myList = deleteAtHead(myList);
+    recPrint(myList->head);
     return 0;
 }
